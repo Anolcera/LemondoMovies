@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "LemondoMovies"
 include(":app")
 include(":core:network")
+include(":core:data")

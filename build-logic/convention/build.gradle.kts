@@ -47,5 +47,15 @@ gradlePlugin {
             id = "lemondomovies.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+
+        register("LemondoMoviesData"){
+            id = "lemondomovies.data"
+            implementationClass = "LemondoMoviesDataConventionPlugin"
+        }
+
+        register("LemondoMoviesDomain"){
+            id = "lemondomovies.domain"
+            implementationClass = "LemondoMoviesDomainConventionPlugin"
+        }
     }
 }
