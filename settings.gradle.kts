@@ -24,3 +24,5 @@ rootProject.name = "LemondoMovies"
 include(":app")
 include(":core:network")
 include(":core:data")
+include(":core:domain")
+include(":core:common")

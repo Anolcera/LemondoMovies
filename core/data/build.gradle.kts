@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "anolcera.lemondomovies.data"
+    namespace = "anolcera.lemondomovies.core.data"
 }

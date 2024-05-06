@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "anolcera.lemondomovies.network"
+    namespace = "anolcera.lemondomovies.core.network"
 
     buildFeatures {
         buildConfig = true
