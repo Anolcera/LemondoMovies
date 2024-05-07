@@ -17,6 +17,8 @@ retrofitKotlinxSerializationJson = "1.0.0"
 okHttp = "4.12.0"
 kotlinxCoroutines = "1.8.0"
 kotlinxSerializationJson = "1.6.3"
+androidxNavigation = "2.7.7"
+androidxHiltNavigationCompose = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +57,10 @@ okHttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 #Kotlin
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+#Navigation
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

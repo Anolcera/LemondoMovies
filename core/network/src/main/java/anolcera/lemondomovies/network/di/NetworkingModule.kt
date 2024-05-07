@@ -1,15 +1,17 @@
 package anolcera.lemondomovies.network.di
 
+import android.content.Context
+import anolcera.lemondomovies.core.network.BuildConfig
+import anolcera.lemondomovies.core.network.R
 import anolcera.lemondomovies.network.ApiVersions
-import anolcera.lemondomovies.network.BuildConfig
 import anolcera.lemondomovies.network.common.NetworkCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -26,21 +28,21 @@ abstract class NetworkingModule {
 
         @Provides
         @Singleton
-        fun providesNetworkJson(serializers: SerializersModule) = Json {
+        fun providesNetworkJson() = Json {
             ignoreUnknownKeys = true
-            serializersModule = serializers
-            prettyPrint = true
         }
 
         @Provides
         @Singleton
-        fun okHttpCallFactory(): Call.Factory = OkHttpClient.Builder()
+        fun okHttpCallFactory(
+            @ApplicationContext context: Context
+        ): Call.Factory = OkHttpClient.Builder()
             .readTimeout(1, TimeUnit.MINUTES)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                 val originalHttpUrl = chain.request().url
                 val url = originalHttpUrl.newBuilder().addQueryParameter(
-                    name = "THE_MOVIE_DB_API_KEY",
+                    name = context.getString(R.string.themoviedb_api_key_param_name),
                     value = BuildConfig.THE_MOVIE_DB_API_KEY
                 ).build()
                 request.url(url)
@@ -65,14 +67,14 @@ abstract class NetworkingModule {
         ): Retrofit.Builder =
             Retrofit.Builder().callFactory(okHTTpCallFactory)
                 .addConverterFactory(
-                    json.asConverterFactory("application/json".toMediaType()),
+                    providesNetworkJson().asConverterFactory("application/json".toMediaType()),
                 )
                 .addCallAdapterFactory(NetworkCallAdapterFactory(json))
-    }
 
-    @Provides
-    fun retrofitInstanceBaseUrl(
-        retrofitBuilder: Retrofit.Builder
-    ): Retrofit =
-        retrofitBuilder.baseUrl("https://api.themoviedb.org/${ApiVersions.VERSION_3}/").build()
+        @Provides
+        fun retrofitInstanceBaseUrl(
+            retrofitBuilder: Retrofit.Builder
+        ): Retrofit =
+            retrofitBuilder.baseUrl("https://api.themoviedb.org/${ApiVersions.VERSION_3}/").build()
+    }
 }
