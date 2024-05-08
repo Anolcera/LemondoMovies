@@ -58,4 +58,9 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))
+
+    //Features
+    implementation(project(":feature:movie-collection"))
+    implementation(project(":feature:movie-details"))
+    implementation(project(":feature:favorites"))
 }

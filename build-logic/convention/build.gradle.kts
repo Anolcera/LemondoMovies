@@ -38,6 +38,11 @@ gradlePlugin {
             implementationClass = "AndroidLibraryConventionPlugin"
         }
 
+        register("androidLibraryCompose"){
+            id = "lemondomovies.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+
         register("androidHilt") {
             id = "lemondomovies.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"

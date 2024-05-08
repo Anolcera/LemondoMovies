@@ -3,6 +3,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.project
 
 class LemondoMoviesDataConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -21,6 +22,9 @@ class LemondoMoviesDataConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("retrofit.core").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.junit").get())
                 add("testImplementation", libs.findLibrary("junit").get())
+
+                add("implementation", project(":core:domain"))
+                add("implementation", project(":core:network"))
             }
         }
     }
