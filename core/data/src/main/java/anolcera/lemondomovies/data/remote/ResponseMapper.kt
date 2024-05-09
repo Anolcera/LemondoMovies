@@ -2,6 +2,7 @@ package anolcera.lemondomovies.data.remote
 
 import anolcera.lemondomovies.data.remote.models.DiscoverMovieResponse
 import anolcera.lemondomovies.data.remote.models.MovieDetailsResponse
+import anolcera.lemondomovies.data.remote.models.TMDB_IMAGE_BASE_URL
 import anolcera.lemondomovies.domain.models.DiscoverMovieModel
 import anolcera.lemondomovies.domain.models.MovieDetailsModel
 
@@ -13,18 +14,10 @@ fun DiscoverMovieResponse.toDomainModel() = DiscoverMovieModel(
 )
 
 fun MovieDetailsResponse.toDomainModel() = MovieDetailsModel(
-    adult = adult,
-    backdropPath = backdropPath,
-    genreIds = genreIds,
     id = id,
-    originalLanguage = originalLanguage,
-    originalTitle = originalTitle,
     overview = overview,
-    popularity = popularity,
-    posterPath = posterPath,
+    posterPath = TMDB_IMAGE_BASE_URL + posterPath,
     releaseDate = releaseDate,
     title = title,
-    video = video,
     voteAverage = voteAverage,
-    voteCount = voteCount
 )
