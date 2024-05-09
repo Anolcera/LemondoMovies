@@ -7,21 +7,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 
 const val movieCollectionGraphRoute = "movie_collection_details_nav_route_pattern"
-private const val detailsRoute = "movie_collection_details_route"
+private const val collectionRoute = "movie_collection_route"
 
 
 fun NavGraphBuilder.movieCollectionNavGraph(
-    navController: NavController,
-    onGoToDetails: () -> Unit,
+    onGoToDetails: (id: Int) -> Unit,
     onGoToFavorites: () -> Unit,
 ){
     navigation(
         route = movieCollectionGraphRoute,
-        startDestination = detailsRoute
+        startDestination = collectionRoute
     ){
-        composable(route = detailsRoute){
+        composable(route = collectionRoute){
             MovieCollectionRoute(
-                movieCollectionViewModel = hiltViewModel()
+                movieCollectionViewModel = hiltViewModel(),
+                onFavoritesClicked = onGoToFavorites,
+                onPosterClicked = onGoToDetails
             )
         }
     }
