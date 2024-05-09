@@ -19,7 +19,15 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtime.ktx").get())
+
+                add("implementation", libs.findLibrary("androidx.material3").get())
+
+                add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
+
+                add("implementation", libs.findLibrary("coil.kt.compose").get())
+                add("implementation", libs.findLibrary("coil.kt.compose.svg").get())
+
                 add("testImplementation", libs.findLibrary("junit").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.junit").get())
 
