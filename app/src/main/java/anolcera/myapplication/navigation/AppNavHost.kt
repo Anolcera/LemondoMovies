@@ -19,7 +19,6 @@ fun AppNavHost(
         startDestination = movieCollectionGraphRoute
     ) {
         movieCollectionNavGraph(
-            navController = navController,
             onGoToDetails = {/*TODO*/},
             onGoToFavorites = {/*TODO*/}
         )
