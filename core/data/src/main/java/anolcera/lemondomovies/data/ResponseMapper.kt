@@ -1,5 +1,6 @@
-package anolcera.lemondomovies.data.remote
+package anolcera.lemondomovies.data
 
+import anolcera.lemondomovies.data.local.MovieDetailsEntity
 import anolcera.lemondomovies.data.remote.models.DiscoverMovieResponse
 import anolcera.lemondomovies.data.remote.models.MovieDetailsResponse
 import anolcera.lemondomovies.data.remote.models.TMDB_IMAGE_BASE_URL
@@ -20,4 +21,22 @@ fun MovieDetailsResponse.toDomainModel() = MovieDetailsModel(
     releaseDate = releaseDate,
     title = title,
     voteAverage = voteAverage,
+)
+
+fun MovieDetailsResponse.toMovieDetailsEntity() = MovieDetailsEntity(
+    id = id,
+    overview = overview,
+    posterPath = TMDB_IMAGE_BASE_URL + posterPath,
+    releaseDate = releaseDate,
+    title = title,
+    voteAverage = voteAverage,
+)
+
+fun MovieDetailsEntity.toDomainModel() = MovieDetailsModel(
+    id = id,
+    overview = overview,
+    posterPath = posterPath,
+    releaseDate = releaseDate,
+    title = title,
+    voteAverage = voteAverage
 )
