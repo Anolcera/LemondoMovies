@@ -31,6 +31,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.findLibrary("junit").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.junit").get())
 
+                add("implementation", libs.findLibrary("androidx.paging.compose").get())
+
                 add("implementation", project(":core:domain"))
                 add("implementation", project(":core:common"))
             }

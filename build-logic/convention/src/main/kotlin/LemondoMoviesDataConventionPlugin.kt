@@ -23,8 +23,15 @@ class LemondoMoviesDataConventionPlugin : Plugin<Project> {
                 add("androidTestImplementation", libs.findLibrary("androidx.junit").get())
                 add("testImplementation", libs.findLibrary("junit").get())
 
+                add("implementation", libs.findLibrary("androidx.paging").get())
+
+                add("implementation", libs.findLibrary("androidx.room").get())
+                add("implementation", libs.findLibrary("androidx.room.compiler").get())
+                add("implementation", libs.findLibrary("androidx.room.paging").get())
+
                 add("implementation", project(":core:domain"))
                 add("implementation", project(":core:network"))
+                add("implementation", project(":core:common"))
             }
         }
     }

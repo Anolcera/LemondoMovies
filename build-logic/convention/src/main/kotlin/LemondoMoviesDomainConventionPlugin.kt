@@ -3,6 +3,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.project
 
 class LemondoMoviesDomainConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -23,6 +24,10 @@ class LemondoMoviesDomainConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.findLibrary("junit").get())
                 add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
                 add("implementation", libs.findLibrary("retrofit.core").get())
+
+                add("implementation", libs.findLibrary("androidx.paging").get())
+
+                add("implementation", project(":core:common"))
             }
         }
     }
