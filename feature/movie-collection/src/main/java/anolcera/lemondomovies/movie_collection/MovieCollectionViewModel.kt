@@ -1,6 +1,7 @@
 package anolcera.lemondomovies.movie_collection
 
 import android.util.Log
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import anolcera.lemondomovies.common.DataResult
@@ -45,6 +46,7 @@ class MovieCollectionViewModel @Inject constructor(
         }
     }
 
+    @Stable
     data class MovieCollectionUiState(
         val movies: List<MovieDetailsModel> = emptyList()
     )

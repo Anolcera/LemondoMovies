@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import anolcera.lemondomovies.movie_collection.movieCollectionGraphRoute
 import anolcera.lemondomovies.movie_collection.movieCollectionNavGraph
+import anolcera.lemondomovies.movie_details.movieDetailsNavGraph
+import anolcera.lemondomovies.movie_details.navigateToMovieDetails
 
 @Composable
 fun AppNavHost(
@@ -19,8 +21,12 @@ fun AppNavHost(
         startDestination = movieCollectionGraphRoute
     ) {
         movieCollectionNavGraph(
-            onGoToDetails = {/*TODO*/},
-            onGoToFavorites = {/*TODO*/}
+            onGoToDetails = { movieId ->
+                navController.navigateToMovieDetails(movieId)
+            },
+            onGoToFavorites = {/*TODO*/ }
         )
+
+        movieDetailsNavGraph()
     }
 }

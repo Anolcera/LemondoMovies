@@ -1,5 +1,6 @@
 package anolcera.myapplication
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -12,7 +13,9 @@ import anolcera.myapplication.navigation.AppNavHost
 
 @Composable
 internal fun App(navController: NavHostController = rememberNavController()) {
-    Scaffold {
+    Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+    ) {
         AppNavHost(
             modifier = Modifier
                 .consumeWindowInsets(it)

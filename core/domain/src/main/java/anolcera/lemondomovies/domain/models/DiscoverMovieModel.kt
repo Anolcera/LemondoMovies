@@ -1,8 +1,8 @@
 package anolcera.lemondomovies.domain.models
 
-import kotlinx.serialization.Serializable
+import javax.annotation.concurrent.Immutable
 
-@Serializable
+@Immutable
 data class DiscoverMovieModel(
     val page: Int,
     val results: List<MovieDetailsModel>,
