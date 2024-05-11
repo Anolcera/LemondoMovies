@@ -3,10 +3,10 @@ package anolcera.lemondomovies.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "PageData")
-data class PageDataEntity(
+@Entity
+data class TmbdRemoteKeys(
     @PrimaryKey(autoGenerate = false)
-    val id: String,
+    val id: Int,
     val nextPage: Int?,
-    val lastUpdated: Long
+    val prevPage: Int?,
 )

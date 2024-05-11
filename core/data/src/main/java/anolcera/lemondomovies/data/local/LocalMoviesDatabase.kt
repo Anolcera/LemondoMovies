@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [
         MovieDetailsEntity::class,
-        PageDataEntity::class,
+        TmbdRemoteKeys::class,
     ],
     version = 1
 )
@@ -14,5 +14,5 @@ abstract class LocalMoviesDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao
 
-    abstract val pageDataDao: PageDataDao
+    abstract val tmdbRemoteKeyDao: TmdbRemoteKeyDao
 }

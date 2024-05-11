@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class MovieDetailsEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val overview: String,
     val posterPath: String,

@@ -115,6 +115,7 @@ private fun MovieCollectionScreen(
                         movieCollection[movieIndex]?.also { movie ->
                             MoviePoster(
                                 modifier = Modifier
+                                    .height(300.dp)
                                     .fillParentMaxWidth(),
                                 movieTitle = movie.title,
                                 posterUrl = movie.posterPath,

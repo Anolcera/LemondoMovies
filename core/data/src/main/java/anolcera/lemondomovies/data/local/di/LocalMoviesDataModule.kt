@@ -40,7 +40,7 @@ object LocalMoviesDataModule {
         theMovieDBDataSource: TheMovieDBDataSource,
     ): Pager<Int, MovieDetailsEntity> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(pageSize = 20, initialLoadSize = 20),
             remoteMediator = MoviesRemoteMediator(
                 localMoviesDatabase = localMoviesDatabase,
                 theMovieDBDataSource = theMovieDBDataSource,

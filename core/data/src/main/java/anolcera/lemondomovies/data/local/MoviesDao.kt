@@ -2,14 +2,15 @@ package anolcera.lemondomovies.data.local
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 
 @Dao
 interface MoviesDao {
 
-    @Upsert
-    suspend fun upsertAll(movies: List<MovieDetailsEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(movies: List<MovieDetailsEntity>)
 
     @Query("SELECT * FROM MovieDetailsEntity")
     fun pagingSource(): PagingSource<Int, MovieDetailsEntity>
