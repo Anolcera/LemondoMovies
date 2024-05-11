@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetMoviesPagingData @Inject constructor(
     private val remoteMoviesRepository: RemoteMoviesRepository
 ) {
-    suspend operator fun invoke(): Flow<PagingData<MovieDetailsModel>> =
+    operator fun invoke(): Flow<PagingData<MovieDetailsModel>> =
         remoteMoviesRepository.getMoviesPage()
 }

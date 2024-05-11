@@ -27,7 +27,9 @@ object LocalMoviesDataModule {
             context,
             LocalMoviesDatabase::class.java,
             "local_movies_database.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @OptIn(ExperimentalPagingApi::class)

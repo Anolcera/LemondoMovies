@@ -1,6 +1,5 @@
 package anolcera.lemondomovies.data.remote
 
-import android.provider.MediaStore.Audio.Media
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -10,6 +9,7 @@ import anolcera.lemondomovies.common.DataResult
 import anolcera.lemondomovies.common.asResult
 import anolcera.lemondomovies.data.local.LocalMoviesDatabase
 import anolcera.lemondomovies.data.local.MovieDetailsEntity
+import anolcera.lemondomovies.data.local.PageDataEntity
 import anolcera.lemondomovies.data.toMovieDetailsEntity
 import anolcera.lemondomovies.network.mapResult
 import okio.IOException
@@ -21,20 +21,6 @@ class MoviesRemoteMediator(
     private val localMoviesDatabase: LocalMoviesDatabase,
     private val theMovieDBDataSource: TheMovieDBDataSource,
 ) : RemoteMediator<Int, MovieDetailsEntity>() {
-
-    override suspend fun initialize(): InitializeAction {
-        val remoteKey = localMoviesDatabase.withTransaction {
-            localMoviesDatabase.pageDataDao().getPageData(REMOTE_KEY_ID)
-        } ?: return InitializeAction.LAUNCH_INITIAL_REFRESH
-
-        val cacheTimeout = TimeUnit.HOURS.convert(1, TimeUnit.MILLISECONDS)
-
-        return if ((System.currentTimeMillis() - remoteKey.lastUpdated) >= cacheTimeout) {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
-            InitializeAction.LAUNCH_INITIAL_REFRESH
-        }
-    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -50,7 +36,7 @@ class MoviesRemoteMediator(
 
                 LoadType.APPEND -> {
                     val remoteKey = localMoviesDatabase.withTransaction {
-                        localMoviesDatabase.pageDataDao().getPageData(REMOTE_KEY_ID)
+                        localMoviesDatabase.pageDataDao.getPageData(REMOTE_KEY_ID)
                     } ?: return MediatorResult.Success(true)
 
                     if (remoteKey.nextPage == null) {
@@ -62,7 +48,8 @@ class MoviesRemoteMediator(
             }
 
             var endOfPaginationReached = true
-            val movies = theMovieDBDataSource.fetchMovies(
+
+            theMovieDBDataSource.fetchMovies(
                 page = loadKey
             ).mapResult().asResult().collect { remoteDataFetchResult ->
                 when (remoteDataFetchResult) {
@@ -89,6 +76,13 @@ class MoviesRemoteMediator(
                                 moviesResult.toMovieDetailsEntity()
                             }
 
+                            localMoviesDatabase.pageDataDao.upsertPageData(
+                                PageDataEntity(
+                                id = "discover_movie",
+                                nextPage = nextLoadKey,
+                                lastUpdated = System.currentTimeMillis()
+                            )
+                            )
                             localMoviesDatabase.moviesDao.upsertAll(movieEntities)
                             endOfPaginationReached = movies.results.isEmpty()
                         }

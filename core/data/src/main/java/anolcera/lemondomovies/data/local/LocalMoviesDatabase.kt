@@ -4,12 +4,15 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [MovieDetailsEntity::class],
+    entities = [
+        MovieDetailsEntity::class,
+        PageDataEntity::class,
+    ],
     version = 1
 )
-abstract class LocalMoviesDatabase: RoomDatabase() {
+abstract class LocalMoviesDatabase : RoomDatabase() {
 
-    abstract  val moviesDao: MoviesDao
+    abstract val moviesDao: MoviesDao
 
-    abstract fun pageDataDao() : PageDataDao
+    abstract val pageDataDao: PageDataDao
 }

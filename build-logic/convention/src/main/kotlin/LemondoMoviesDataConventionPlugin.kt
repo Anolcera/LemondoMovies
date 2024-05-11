@@ -26,7 +26,7 @@ class LemondoMoviesDataConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx.paging").get())
 
                 add("implementation", libs.findLibrary("androidx.room").get())
-                add("implementation", libs.findLibrary("androidx.room.compiler").get())
+                add("kapt", libs.findLibrary("androidx.room.compiler").get())
                 add("implementation", libs.findLibrary("androidx.room.paging").get())
 
                 add("implementation", project(":core:domain"))

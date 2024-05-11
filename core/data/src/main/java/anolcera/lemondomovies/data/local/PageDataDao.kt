@@ -1,17 +1,16 @@
 package anolcera.lemondomovies.data.local
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 
 @Dao
 interface PageDataDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPageData(key: PageData)
+    @Upsert
+    suspend fun upsertPageData(key: PageDataEntity)
 
     @Query("select * from PageData where id=:key")
-    suspend fun getPageData(key: String): PageData?
+    suspend fun getPageData(key: String): PageDataEntity?
 
     @Query("delete from PageData")
     suspend fun clearPageData()
