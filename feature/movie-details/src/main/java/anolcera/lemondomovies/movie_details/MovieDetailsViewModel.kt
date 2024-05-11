@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import anolcera.lemondomovies.common.DataResult
 import anolcera.lemondomovies.common.asResult
 import anolcera.lemondomovies.domain.models.MovieDetailsModel
-import anolcera.lemondomovies.domain.useCases.FetchMoviesUseCase
+import anolcera.lemondomovies.domain.useCases.GetMoviesPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val fetchMoviesUseCase: FetchMoviesUseCase,
+    private val getMoviesPagingData: GetMoviesPagingData,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -28,7 +28,7 @@ class MovieDetailsViewModel @Inject constructor(
     val movieDetailsUiState = _movieDetailsUiState.asStateFlow()
     init {
         viewModelScope.launch {
-            fetchMoviesUseCase()
+            getMoviesPagingData()
                 .asResult()
                 .collect { dataResult ->
                     when (dataResult) {
@@ -39,9 +39,7 @@ class MovieDetailsViewModel @Inject constructor(
                         is DataResult.Success -> {
                             _movieDetailsUiState.update {
                                 it.copy(
-                                    movie = dataResult.data.results.firstOrNull { movie ->
-                                        movie.id == selectedMovieId
-                                    }
+                                    movie = null
                                 )
                             }
                         }

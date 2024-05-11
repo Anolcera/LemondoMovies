@@ -1,10 +1,13 @@
 package anolcera.lemondomovies.domain.repositories
 
-import anolcera.lemondomovies.domain.models.DiscoverMovieModel
+import androidx.paging.PagingData
+import anolcera.lemondomovies.domain.models.MovieDetailsModel
 import kotlinx.coroutines.flow.Flow
 
 
 interface RemoteMoviesRepository {
 
-    suspend fun fetchMovies(): Flow<DiscoverMovieModel>
+    //suspend fun getMovieById(): Flow<DiscoverMovieModel>
+
+    fun getMoviesPage(): Flow<PagingData<MovieDetailsModel>>
 }

@@ -1,31 +1,27 @@
 package anolcera.lemondomovies.movie_collection
 
-import android.util.Log
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import anolcera.lemondomovies.common.DataResult
-import anolcera.lemondomovies.common.asResult
-import anolcera.lemondomovies.domain.models.MovieDetailsModel
-import anolcera.lemondomovies.domain.useCases.FetchMoviesUseCase
+import androidx.paging.cachedIn
+import anolcera.lemondomovies.domain.useCases.GetMoviesPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieCollectionViewModel @Inject constructor(
-    private val fetchMoviesUseCase: FetchMoviesUseCase
+    getMoviesPagingData: GetMoviesPagingData
 ) : ViewModel() {
 
-    private val _movieCollectionUiState = MutableStateFlow(MovieCollectionUiState())
+    val movies = getMoviesPagingData()
+        .cachedIn(viewModelScope)
+
+    /*private var _movieCollectionUiState = MutableStateFlow(MovieCollectionUiState())
     val movieCollectionUiState = _movieCollectionUiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            fetchMoviesUseCase()
+            getMoviesPagingData()
+                .cachedIn(viewModelScope)
                 .asResult()
                 .collect { dataResult ->
                     when (dataResult) {
@@ -36,7 +32,7 @@ class MovieCollectionViewModel @Inject constructor(
                         is DataResult.Success -> {
                             _movieCollectionUiState.update {
                                 it.copy(
-                                    movies = dataResult.data.results
+                                    movies = dataResult.data
                                 )
                             }
                         }
@@ -48,8 +44,8 @@ class MovieCollectionViewModel @Inject constructor(
 
     @Stable
     data class MovieCollectionUiState(
-        val movies: List<MovieDetailsModel> = emptyList()
-    )
+        val movies: PagingData.Companion = PagingData.Companion
+    )*/
 
     companion object {
         private const val TAG = "MovieCollectionViewMode"

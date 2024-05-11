@@ -3,6 +3,7 @@ package anolcera.lemondomovies.movie_collection.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +22,7 @@ internal fun MoviePoster(
             .clickable { onPosterClicked() }
     ) {
         SubcomposeAsyncImage(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data(posterUrl)
