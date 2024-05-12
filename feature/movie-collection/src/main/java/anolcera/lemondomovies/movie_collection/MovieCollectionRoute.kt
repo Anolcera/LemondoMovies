@@ -29,7 +29,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import anolcera.lemondomovies.domain.models.MovieDetailsModel
-import anolcera.lemondomovies.movie_collection.ui.MoviePoster
+import anolcera.lemondomovies.ui.MoviePoster
 
 private const val TAG = "MovieCollectionRoute"
 
@@ -93,7 +93,7 @@ private fun MovieCollectionScreen(
                         IconButton(onClick = onFavoritesClicked) {
                             Icon(
                                 painter = painterResource(
-                                    id = R.drawable.favorites_topbar_nagiation_icon
+                                    id = anolcera.lemondomovies.ui.R.drawable.favorites_topbar_nagiation_icon
                                 ),
                                 contentDescription = null
                             )

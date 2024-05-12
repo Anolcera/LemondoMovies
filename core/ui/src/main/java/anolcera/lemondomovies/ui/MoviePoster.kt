@@ -1,4 +1,4 @@
-package anolcera.lemondomovies.movie_collection.ui
+package anolcera.lemondomovies.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -9,12 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import anolcera.lemondomovies.movie_collection.R
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-internal fun MoviePoster(
+fun MoviePoster(
     modifier: Modifier = Modifier,
     movieTitle: String,
     posterUrl: String,

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import anolcera.lemondomovies.domain.models.MovieDetailsModel
 import anolcera.lemondomovies.domain.useCases.RemoveMovieFromFavoritesUseCase
+import anolcera.lemondomovies.ui.R
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import javax.annotation.Untainted

@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import anolcera.lemondomovies.favorites.favoriteMoviesNavGraph
+import anolcera.lemondomovies.favorites.favoriteMoviesNavGraphPattern
 import anolcera.lemondomovies.movie_collection.movieCollectionGraphRoute
 import anolcera.lemondomovies.movie_collection.movieCollectionNavGraph
 import anolcera.lemondomovies.movie_details.movieDetailsNavGraph
@@ -24,9 +26,11 @@ fun AppNavHost(
             onGoToDetails = { movieId ->
                 navController.navigateToMovieDetails(movieId)
             },
-            onGoToFavorites = {/*TODO*/ }
+            onGoToFavorites = { navController.navigate(favoriteMoviesNavGraphPattern) }
         )
 
         movieDetailsNavGraph()
+
+        favoriteMoviesNavGraph()
     }
 }
