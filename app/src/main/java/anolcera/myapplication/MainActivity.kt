@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.hilt.navigation.compose.hiltViewModel
 import anolcera.myapplication.ui.theme.LemondoMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LemondoMoviesTheme {
-                App()
+                App(hiltViewModel())
             }
         }
     }

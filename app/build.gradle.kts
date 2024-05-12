@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.material)
     implementation(libs.androidx.material3)
     implementation(libs.hilt.android)
     testImplementation(libs.junit)
@@ -59,6 +60,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
+    implementation(project(":core:network"))
 
     //Features
     implementation(project(":feature:movie-collection"))

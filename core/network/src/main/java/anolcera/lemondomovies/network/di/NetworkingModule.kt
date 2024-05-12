@@ -5,7 +5,10 @@ import anolcera.lemondomovies.core.network.BuildConfig
 import anolcera.lemondomovies.core.network.R
 import anolcera.lemondomovies.network.ApiVersions
 import anolcera.lemondomovies.network.common.NetworkCallAdapterFactory
+import anolcera.lemondomovies.network.connectivity.ConnectivityManagerNetworkMonitor
+import anolcera.lemondomovies.network.connectivity.NetworkMonitor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +26,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class NetworkingModule {
+
+    @Binds
+    abstract fun bindsNetworkMonitor(
+        networkMonitor: ConnectivityManagerNetworkMonitor,
+    ): NetworkMonitor
 
     companion object {
 
