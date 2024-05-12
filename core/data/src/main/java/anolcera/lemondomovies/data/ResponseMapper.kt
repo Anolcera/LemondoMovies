@@ -24,7 +24,7 @@ fun MovieDetailsResponse.toDomainModel() = MovieDetailsModel(
 )
 
 fun MovieDetailsResponse.toMovieDetailsEntity() = MovieDetailsEntity(
-    id = id,
+    //id = id,
     overview = overview,
     posterPath = TMDB_IMAGE_BASE_URL + posterPath,
     releaseDate = releaseDate,

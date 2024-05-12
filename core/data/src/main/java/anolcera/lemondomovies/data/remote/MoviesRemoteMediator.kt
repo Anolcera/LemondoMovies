@@ -14,6 +14,7 @@ import anolcera.lemondomovies.data.toMovieDetailsEntity
 import anolcera.lemondomovies.network.mapResult
 import okio.IOException
 import retrofit2.HttpException
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class MoviesRemoteMediator(
@@ -24,6 +25,20 @@ class MoviesRemoteMediator(
     private val moviesDao = localMoviesDatabase.moviesDao
     private val tmdbRemoteKeyDao = localMoviesDatabase.tmdbRemoteKeyDao
 
+    override suspend fun initialize(): InitializeAction {
+        val remoteKey = localMoviesDatabase.withTransaction {
+            tmdbRemoteKeyDao.getRemoteKey(REMOTE_KEY_ID)
+        } ?: return InitializeAction.LAUNCH_INITIAL_REFRESH
+
+        val cacheTimeout = TimeUnit.HOURS.convert(1, TimeUnit.MILLISECONDS)
+
+        return if((System.currentTimeMillis() - remoteKey.lastUpdated) >= cacheTimeout) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, MovieDetailsEntity>
@@ -31,49 +46,41 @@ class MoviesRemoteMediator(
         return try {
 
             val currentPage = when (loadType) {
-                LoadType.REFRESH -> {
-                    1
-                    /*val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                    remoteKeys?.nextPage?.minus(1) ?: 1*/
-                }
+                LoadType.REFRESH -> { 1 }
 
                 LoadType.PREPEND -> {
-                    return MediatorResult.Success(
-                        endOfPaginationReached = true
-                    )
-                    /*val remoteKeys = getRemoteKeyForFirstItem(state)
-                    val prevPage = remoteKeys?.prevPage
-                        ?: return MediatorResult.Success(
-                            endOfPaginationReached = remoteKeys != null
-                        )
-                    prevPage*/
+                    return MediatorResult.Success(true)
                 }
 
                 LoadType.APPEND -> {
-                    val remoteKeys = getRemoteKeyForLastItem(state)
-                    val nextPage = remoteKeys?.nextPage
-                        ?: return MediatorResult.Success(
-                            endOfPaginationReached = remoteKeys != null
-                        )
-                    nextPage
+                    val remoteKey = localMoviesDatabase.withTransaction {
+                        tmdbRemoteKeyDao.getRemoteKey(REMOTE_KEY_ID)
+                    } ?: return MediatorResult.Success(true)
+
+                    if(remoteKey.nextPage == null) {
+                        return MediatorResult.Success(true)
+                    }
+
+                    remoteKey.nextPage
                 }
             }
 
             var endOfPaginationReached = true
-
-            //1219685 last ones id
 
             theMovieDBDataSource.fetchMovies(
                 page = currentPage
             ).mapResult().asResult().collect { remoteDataFetchResult ->
                 when (remoteDataFetchResult) {
                     is DataResult.Error -> {
-                        throw Exception(remoteDataFetchResult.exception)
+                        endOfPaginationReached = true
                     }
 
                     is DataResult.Success -> {
 
-                        val movies = remoteDataFetchResult.data.results
+                        val movies = remoteDataFetchResult.data.results.map { moviesResult ->
+                            moviesResult.toMovieDetailsEntity()
+
+                        }
 
                         localMoviesDatabase.withTransaction {
                             if (loadType == LoadType.REFRESH) {
@@ -82,24 +89,17 @@ class MoviesRemoteMediator(
 
                             }
 
-                            endOfPaginationReached = movies.isEmpty()
-                            val prevPage = if (currentPage == 1) null else currentPage - 1
-                            val nextPage = if (endOfPaginationReached) null else currentPage + 1
+                            endOfPaginationReached = false
+                            val nextPage = currentPage + 1
 
-                            val keys = movies.map { movie ->
+                            tmdbRemoteKeyDao.insertRemoteKey(
                                 TmbdRemoteKeys(
-                                    id = movie.id,
-                                    prevPage = prevPage,
-                                    nextPage = nextPage
+                                    id = REMOTE_KEY_ID,
+                                    nextPage = nextPage,
+                                    lastUpdated = System.currentTimeMillis()
                                 )
-                            }
-
-                            tmdbRemoteKeyDao.insertRemoteKeys(keys)
-                            moviesDao.insertAll(
-                                movies.map { moviesResult ->
-                                    moviesResult.toMovieDetailsEntity()
-                                }
                             )
+                            moviesDao.insertAll(movies)
                         }
                     }
                 }
@@ -114,36 +114,6 @@ class MoviesRemoteMediator(
         } catch (e: Exception) {
             MediatorResult.Error(e)
         }
-    }
-
-    private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, MovieDetailsEntity>
-    ): TmbdRemoteKeys? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
-                tmdbRemoteKeyDao.getRemoteKeys(id = id)
-            }
-        }
-    }
-
-    private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, MovieDetailsEntity>
-    ): TmbdRemoteKeys? {
-        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
-            ?.let { movie ->
-                tmdbRemoteKeyDao.getRemoteKeys(id = movie.id)
-            }
-    }
-
-    private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, MovieDetailsEntity>
-    ): TmbdRemoteKeys? {
-        return state.pages.lastOrNull {
-            it.data.isNotEmpty()
-        }?.data?.lastOrNull()
-            ?.let { movie ->
-                tmdbRemoteKeyDao.getRemoteKeys(id = movie.id)
-            }
     }
 
     companion object {

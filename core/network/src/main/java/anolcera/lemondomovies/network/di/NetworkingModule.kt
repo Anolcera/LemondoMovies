@@ -67,7 +67,7 @@ abstract class NetworkingModule {
         ): Retrofit.Builder =
             Retrofit.Builder().callFactory(okHTTpCallFactory)
                 .addConverterFactory(
-                    providesNetworkJson().asConverterFactory("application/json".toMediaType()),
+                    json.asConverterFactory("application/json".toMediaType()),
                 )
                 .addCallAdapterFactory(NetworkCallAdapterFactory(json))
 

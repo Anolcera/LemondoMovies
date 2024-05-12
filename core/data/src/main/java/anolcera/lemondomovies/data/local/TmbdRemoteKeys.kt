@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class TmbdRemoteKeys(
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    val id: String,
     val nextPage: Int?,
-    val prevPage: Int?,
+    val lastUpdated: Long
 )

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import anolcera.lemondomovies.domain.models.MovieDetailsModel
 import anolcera.lemondomovies.movie_collection.ui.MoviePoster
@@ -110,6 +111,7 @@ private fun MovieCollectionScreen(
                         key = movieCollection.itemKey {
                             it.id
                         },
+                        contentType = movieCollection.itemContentType()
                     ) { movieIndex ->
 
                         movieCollection[movieIndex]?.also { movie ->

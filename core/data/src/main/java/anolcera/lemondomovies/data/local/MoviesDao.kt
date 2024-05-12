@@ -13,8 +13,8 @@ interface MoviesDao {
     suspend fun insertAll(movies: List<MovieDetailsEntity>)
 
     @Query("SELECT * FROM MovieDetailsEntity")
-    fun pagingSource(): PagingSource<Int, MovieDetailsEntity>
+    fun getAllMovies(): PagingSource<Int, MovieDetailsEntity>
 
     @Query("DELETE FROM MovieDetailsEntity")
-    suspend fun clearAll()
+    suspend fun clearAll(): Unit
 }
