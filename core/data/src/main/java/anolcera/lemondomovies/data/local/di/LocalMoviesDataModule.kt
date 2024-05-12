@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.room.Room
 import anolcera.lemondomovies.data.local.LocalMoviesDatabase
-import anolcera.lemondomovies.data.local.MovieDetailsEntity
+import anolcera.lemondomovies.data.local.pagination.MovieDetailsEntity
 import anolcera.lemondomovies.data.remote.MoviesRemoteMediator
 import anolcera.lemondomovies.data.remote.TheMovieDBDataSource
 import dagger.Module
