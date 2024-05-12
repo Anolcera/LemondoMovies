@@ -1,4 +1,4 @@
-package anolcera.lemondomovies.data.local
+package anolcera.lemondomovies.data.local.pagination
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class MovieDetailsEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val remoteId: Int,
     val overview: String,
     val posterPath: String,
     val releaseDate: String,

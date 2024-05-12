@@ -1,4 +1,4 @@
-package anolcera.lemondomovies.data.local
+package anolcera.lemondomovies.data.local.pagination
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
@@ -15,6 +15,9 @@ interface MoviesDao {
     @Query("SELECT * FROM MovieDetailsEntity")
     fun getAllMovies(): PagingSource<Int, MovieDetailsEntity>
 
+    @Query("SELECT * FROM MovieDetailsEntity WHERE  id=:id")
+    suspend fun getMovieById(id: Int): MovieDetailsEntity?
+
     @Query("DELETE FROM MovieDetailsEntity")
-    suspend fun clearAll(): Unit
+    suspend fun clearAll()
 }

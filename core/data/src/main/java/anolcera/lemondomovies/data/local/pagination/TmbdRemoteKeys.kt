@@ -1,4 +1,4 @@
-package anolcera.lemondomovies.data.local
+package anolcera.lemondomovies.data.local.pagination
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,5 @@ import androidx.room.PrimaryKey
 data class TmbdRemoteKeys(
     @PrimaryKey(autoGenerate = false)
     val id: String,
-    val nextPage: Int?,
-    val lastUpdated: Long
+    val nextPage: Int?
 )

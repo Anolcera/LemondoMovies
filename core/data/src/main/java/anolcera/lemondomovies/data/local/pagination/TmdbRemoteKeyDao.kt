@@ -1,4 +1,4 @@
-package anolcera.lemondomovies.data.local
+package anolcera.lemondomovies.data.local.pagination
 
 import androidx.room.Dao
 import androidx.room.Insert
