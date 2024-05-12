@@ -8,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import anolcera.lemondomovies.common.DataResult
 import anolcera.lemondomovies.common.asResult
 import anolcera.lemondomovies.domain.models.MovieDetailsModel
-import anolcera.lemondomovies.domain.useCases.GetMoviesPagingData
+import anolcera.lemondomovies.domain.useCases.AddMovieToFavoritesUseCase
+import anolcera.lemondomovies.domain.useCases.GetFavoriteMovieByIdUseCase
+import anolcera.lemondomovies.domain.useCases.GetMovieByIdUseCase
+import anolcera.lemondomovies.domain.useCases.RemoveMovieFromFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,17 +21,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val getMoviesPagingData: GetMoviesPagingData,
+    private val getMovieByIdUseCase: GetMovieByIdUseCase,
+    private val addMovieToFavoritesUseCase: AddMovieToFavoritesUseCase,
+    private val removeMovieFromFavoritesUseCase: RemoveMovieFromFavoritesUseCase,
+    private val getFavoriteMovieByIdUseCase: GetFavoriteMovieByIdUseCase,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     private val selectedMovieId = savedStateHandle.get<String>(detailsRouteNavArg)?.toIntOrNull()
 
     private val _movieDetailsUiState = MutableStateFlow(MovieDetailsUiState())
     val movieDetailsUiState = _movieDetailsUiState.asStateFlow()
+
     init {
         viewModelScope.launch {
-            getMoviesPagingData()
+
+            getMovieByIdUseCase(selectedMovieId!!) //todo remove !!
                 .asResult()
                 .collect { dataResult ->
                     when (dataResult) {
@@ -39,9 +47,11 @@ class MovieDetailsViewModel @Inject constructor(
                         is DataResult.Success -> {
                             _movieDetailsUiState.update {
                                 it.copy(
-                                    movie = null
+                                    movie = dataResult.data
                                 )
                             }
+
+                            isMovieFavorite(dataResult.data)
                         }
 
                     }
@@ -49,10 +59,37 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
+    private fun isMovieFavorite(movie: MovieDetailsModel) {
+
+        viewModelScope.launch {
+
+            _movieDetailsUiState.update {
+                it.copy(
+                    isFavorite = getFavoriteMovieByIdUseCase(movie.remoteId) != null
+                )
+            }
+        }
+    }
+
+    fun toggleMovieFavoriteStatus(isFavorite: Boolean, movie: MovieDetailsModel) {
+        viewModelScope.launch {
+            if (isFavorite){
+                removeMovieFromFavoritesUseCase(movie.remoteId)
+            } else addMovieToFavoritesUseCase(movie)
+
+
+            _movieDetailsUiState.update {
+                it.copy(
+                    isFavorite = !isFavorite
+                )
+            }
+        }
+    }
 
     @Stable
     data class MovieDetailsUiState(
         val movie: MovieDetailsModel? = null,
+        val isFavorite: Boolean = false,
     )
 
     companion object {

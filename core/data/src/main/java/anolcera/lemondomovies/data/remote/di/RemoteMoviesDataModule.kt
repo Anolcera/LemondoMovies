@@ -1,8 +1,8 @@
 package anolcera.lemondomovies.data.remote.di
 
-import anolcera.lemondomovies.data.remote.RemoteMoviesRepositoryImpl
+import anolcera.lemondomovies.data.MoviesRepositoryImpl
 import anolcera.lemondomovies.data.remote.TheMovieDBDataSource
-import anolcera.lemondomovies.domain.repositories.RemoteMoviesRepository
+import anolcera.lemondomovies.domain.repositories.MoviesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,8 +17,8 @@ abstract class RemoteMoviesDataModule {
 
     @Binds
     abstract fun bindRemoteMoviesRepository(
-        remoteMoviesRepositoryImpl: RemoteMoviesRepositoryImpl
-    ): RemoteMoviesRepository
+        remoteMoviesRepositoryImpl: MoviesRepositoryImpl
+    ): MoviesRepository
 
     companion object {
         @Provides
